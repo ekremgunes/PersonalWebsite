@@ -1,0 +1,153 @@
+﻿@model BlogViewModel
+@section title{
+    gunesekrem.com | Blog
+}
+
+<!-- BLOGLAR -->
+<div class="row">
+
+    <div class="col-lg-3 mt-sm-5 mt-lg-0">
+        <div class="top-downloaded">
+            <div class="heading-section">
+                <a href="#">
+                    <h4 style="font-size: 23px;">Kategoriler</h4>
+                </a>
+            </div>
+            <ul>
+                @if (Model.Categories?.Count > 0)
+                {
+                    foreach (var item in Model.Categories)
+                    {
+                        <a href="/Blog/Explorer?category=@item.Title">
+                        <li>
+                            <h4>@item.Title</h4>
+
+                            <span>
+                                <i class="fa fa-star" style="color: yellow;"></i>
+                                    @item.PostCount
+                            </span>
+                        </li>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <p>Henüz kategori eklenmemiş</p>
+                }
+
+
+
+            </ul>
+            <div class="text-button">
+                <a href="/Home/Categories">Tüm Kategoriler</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9">
+        <div style="margin-top: 0;" class="most-popular">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="heading-section">
+                        <h4>
+                            <em>
+                                @(Model.CategoryName != null ? Model.CategoryName : "Blog")
+
+                            </em> Yazıları
+                        </h4>
+                    </div>
+
+                    @if (Model.Posts?.Count > 0)
+                    {
+                        <div class="col-12" id="postsDiv">
+                            @foreach (var item in Model.Posts)
+                            {
+                                <div class="item" style="border-radius: 1px;">
+                                    <a href="/Blog/Index?slug=@item.Slug" class="">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-lg-4 col-md-3">
+                                                <img style="min-height: 98%;" src="~/images/@item.Image" alt="not found">
+
+                                            </div>
+                                            <div class="text-sm-center text-lg-left col-sm-12 col-lg-8 col-md-9">
+                                                <div class="mt-sm-2">
+                                                    <h3 class="text-lg-left" style="margin-top: 0;">@item.Title</h3>
+                                                    @Html.Raw(item.Content.Length > 50 ? item.Content.Substring(0, 50) : item.Content.Substring(0, item.Content.Length))
+
+                                                </div>
+                                                <div class="inline-li-div text-lg-left">
+                                                    <li><i class="fa-solid fa-people-group"></i> @item.ViewCount z.</li>
+                                                    <li><i class="fa-sharp fa-solid fa-clock"></i> @item.ReadingTime dk</li>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </a>
+                                </div>
+
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center">Henüz paylaşım yapılmamış</p>
+                    }
+
+                    <div class="col-lg-12" id="LoadMoreDiv">
+                        <div class="main-button">
+                            <a href="javascript:void(0)" onclick="LoadMore(this)">Daha Fazla Yükle</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+@section scripts{
+    <script>
+        var loadMoreDiv = document.getElementById("LoadMoreDiv");
+        var pageIndex = 2;
+
+        const LoadMore = (element) => {
+            if (element.innerHTML.includes(" ⏳ ")) {
+                toastr.info("İşlemin bitmesini bekleyiniz")
+                return
+            }
+
+            var urlParams = new URLSearchParams(window.location.search)
+            var category = urlParams.get('category')
+            
+
+            element.innerHTML = " ⏳ "
+
+            $.ajax({
+                url: "/Blog/LoadMore",
+                type: "GET",
+                data: {
+                    pageIndex: pageIndex,
+                    category: category,
+                },
+                success: function (response) {
+                    $("#postsDiv").append(response);
+
+                    setTimeout(function () {
+                        element.innerHTML = "Daha Fazla Yükle"
+                    }, 500)
+                    pageIndex++;
+
+                },
+                error: function (err) {
+                    console.error(err);
+                    element.innerHTML = "Daha Fazla Yükle"
+                }
+            });
+
+        }
+    </script>
+}

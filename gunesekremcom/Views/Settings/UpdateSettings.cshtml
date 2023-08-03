@@ -1,0 +1,270 @@
+﻿@model GetSettingsQueryResult
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12 mt-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-1">Site Ayarları</h4>
+                <br>
+                <form asp-action="UpdateSettings" asp-controller="Settings" method="post" enctype="multipart/form-data">
+                    <div style="display:none">
+                        <input asp-for="@Model.LogoImage" value="@Model.LogoImage" type="hidden" />
+                        <input asp-for="@Model.ProfilePhoto" value="@Model.ProfilePhoto" type="hidden" />
+                        <input asp-for="@Model.Icon" value="@Model.Icon" type="hidden" />
+                    </div>
+
+                    <div class="col-12 row">
+                        <div class="col-6">
+                            <label class="m-1" for="logoImg">Logo Resmi</label>
+
+                            <div class="input-group mb-4">
+
+                                <label class="img-label" for="logoImg">
+                                    <div class="overlay">
+                                    </div>
+                                </label>
+
+                                <input id="logoImg" type='file' class="image-input" accept='image/*' name="logoImg"
+                                       onchange='openFile(event)'>
+
+                                <div class="output-div" id="output-div">
+                                    <div id="output-img-div">
+                                        <img class="output-img" src="~/images/@Model.LogoImage" alt="not found">
+                                    </div>
+                                    <img class="output" id='output'>
+                                </div>
+                                <span class="text-danger" asp-validation-for="@Model.LogoImage"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <label class="m-1" for="pp">Profil Resmi</label>
+
+                            <div class="input-group mb-4">
+
+                                <label class="img-label" for="pp">
+                                    <div class="overlay">
+                                    </div>
+                                </label>
+
+                                <input id="pp" onchange="openFile2(event)" class="image-input" type='file' accept='image/*' name="profilePhoto">
+
+                                <div class="output-div" id="output-div2">
+                                    <div id="output-img-div2">
+                                        <img class="output-img" src="~/images/@Model.ProfilePhoto" alt="not found">
+                                    </div>
+                                    <img class="output" id='output2'>
+                                </div>
+                                <span class="text-danger" asp-validation-for="@Model.ProfilePhoto"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="ml-1" asp-for="@Model.Name">Kullanıcı Adı&Soyadı</label>
+                        <input asp-for="@Model.Name" class="form-control " type="text">
+                        <span class="text-danger" asp-validation-for="@Model.Name"></span>
+                    </div>
+
+                    <div class="mb-4 ">
+                        <label class="ml-1" asp-for="@Model.Email">Email</label>
+                        <input asp-for="@Model.Email" class="form-control " type="email">
+                        <span class="text-danger" asp-validation-for="@Model.Email"></span>
+                    </div>
+                    <div class="mb-4 ">
+                        <label class="ml-1" asp-for="@Model.Definition">Hakkında</label>
+                        <textarea id="definition" asp-for="@Model.Definition" class="form-control " rows="3" type="text">
+                            @Model.Definition
+                        </textarea>
+                        <span class="text-danger" asp-validation-for="@Model.Definition"></span>
+                    </div>
+
+                    <div class="mb-4 ">
+                        <label class="ml-1" asp-for="@Model.AboutArticle">Portfolyo Tanıtım</label>
+                        <textarea id="article" asp-for="@Model.AboutArticle" class="form-control " rows="3" type="text">
+                            @Model.AboutArticle
+                        </textarea>
+                        <span class="text-danger" asp-validation-for="@Model.AboutArticle"></span>
+                    </div>
+
+                    <div class="mb-4 ">
+                        <label class="ml-1" asp-for="@Model.School">Okul</label>
+                        <input asp-for="@Model.School" class="form-control " type="text">
+                        <span class="text-danger" asp-validation-for="@Model.School"></span>
+                    </div>
+                    <div class="mb-4 ">
+                        <label class="ml-1" asp-for="@Model.SchoolUrl">Okul Url</label>
+                        <input asp-for="@Model.SchoolUrl" class="form-control " type="text">
+                        <span class="text-danger" asp-validation-for="@Model.SchoolUrl"></span>
+                    </div>
+                    <div class="mb-4 ">
+                        <label class="ml-1" asp-for="@Model.Company">Company(opsiyonel)</label>
+                        <input asp-for="@Model.Company" class="form-control " type="text">
+                        <span class="text-danger" asp-validation-for="@Model.Company"></span>
+                    </div>
+                    <div class="mb-4 ">
+                        <label class="ml-1" asp-for="@Model.CompanyUrl">Company Url(opsiyonel)</label>
+                        <input asp-for="@Model.CompanyUrl" class="form-control " type="text">
+                        <span class="text-danger" asp-validation-for="@Model.CompanyUrl"></span>
+                    </div>
+                    <div class="mb-4 ">
+                        <label class="ml-1" asp-for="@Model.Location">Konum</label>
+                        <input asp-for="@Model.Location" class="form-control " type="text">
+                        <span class="text-danger" asp-validation-for="@Model.Location"></span>
+                    </div>
+                    <div class="mb-4">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-12">
+                                <label asp-for="@Model.Icon">Icon </label>
+                                <input class="form-control" type="file" accept='image/*' name="IconFile">
+                                <span class="text-danger" asp-validation-for="@Model.Icon"></span>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="col-2" style="margin-top:2.2rem;">
+                                    <img src="/images/@Model.Icon"/>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div><button type="submit" class="btn btn-primary">Güncelle</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#article').summernote({
+                height: 200
+            });
+            $('#definition').summernote({
+                height: 200
+            });
+        });
+    </script>
+    <script>
+        var openFile = function (event) {
+
+            var input = event.target
+            var path = input.files[0].name
+            var extn = path.substring(path.lastIndexOf('.') + 1).toLowerCase()
+            if (extn == "png" || extn == "jpg" || extn == "jpeg" || extn == "svg") {
+                var reader = new FileReader()
+
+                reader.onload = function () {
+
+                    var dataURL = reader.result
+                    var output = document.getElementById('output')
+                    output.src = dataURL
+                    var outputDiv = document.getElementById("output-div")
+                    var outputImgDiv = document.getElementById("output-img-div")
+
+                    outputImgDiv.style.display = "none"
+                    output.style.display = "inline"
+
+                }
+                reader.readAsDataURL(input.files[0])
+            } else {
+                toastr.info("Desteklenmeyen Dosya Türü")
+            }
+        }
+
+        //pp
+
+        var openFile2 = function (event) {
+
+            var input = event.target
+            var path = input.files[0].name
+            var extn = path.substring(path.lastIndexOf('.') + 1).toLowerCase()
+            if (extn == "png" || extn == "jpg" || extn == "jpeg" || extn == "svg") {
+                var reader = new FileReader()
+
+                reader.onload = function () {
+
+                    var dataURL = reader.result
+                    var output = document.getElementById('output2')
+                    output.src = dataURL
+                    var outputDiv = document.getElementById("output-div2")
+                    var outputImgDiv = document.getElementById("output-img-div2")
+
+                    outputImgDiv.style.display = "none"
+                    output.style.display = "inline"
+
+                }
+                reader.readAsDataURL(input.files[0])
+            } else {
+                toastr.info("Desteklenmeyen Dosya Türü")
+            }
+        }
+
+    </script>
+}
+@section links{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css">
+
+    <style>
+
+        /*for images*/
+        /*input[type="file"] {
+            position: absolute;
+            left: -9999rem
+        }*/
+        .image-input {
+            position: absolute;
+            left: -9999rem
+        }
+        .overlay {
+            opacity: 0;
+            background: gray;
+            position: absolute;
+            width: 23rem;
+            height: auto !important;
+            border-radius: .7rem;
+        }
+
+        .img-label {
+            border: 2px solid var(--first);
+            display: inline-block;
+            position: absolute;
+            width: 23rem;
+            height: 14rem !important;
+            border-radius: .7rem;
+            cursor: pointer;
+        }
+
+            .img-label:hover #overlay {
+                opacity: 0.8;
+            }
+
+        .output {
+            display: none;
+            z-index: 5;
+            width: 23rem !important;
+            height: auto !important;
+            max-height: 30rem !important;
+            border-radius: 1rem;
+        }
+
+        .output-img {
+            background-position: center;
+            width: 23rem !important;
+            height: auto !important;
+            max-height: 30rem !important;
+            border-radius: .7rem;
+        }
+
+        .output-div {
+            margin-bottom: .7rem;
+        }
+    </style>
+}

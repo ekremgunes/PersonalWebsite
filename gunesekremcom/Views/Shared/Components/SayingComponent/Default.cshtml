@@ -1,0 +1,21 @@
+﻿@model SayingComponentQueryResult
+<div class="main-banner" style="background-image: url(/front/assets/images/baroggg.png);">
+    @if (Model != null)
+    {
+        <div class="row">
+        <div class="col-lg-7">
+            <div class="header-text">
+                <h5 style="font-style: oblique;text-align: left;">
+                    “@Model.Content”
+                </h5>
+                <p>@Model.Owner</p>
+                <br>
+
+                <div class="main-button">
+                    <a href="/Blog/Explorer"> Blog Yazılarına git</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    }
+</div>

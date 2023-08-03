@@ -1,0 +1,129 @@
+﻿@section title{
+    gunesekrem.com
+}
+
+<!-- ***** SLİDER ***** -->
+@await Component.InvokeAsync("SayingComponent")
+
+<!-- ***** BLOG ***** -->
+<div class="row mt-5">
+
+    @await Component.InvokeAsync("PostComponent")
+
+    @await Component.InvokeAsync("CategoryComponent")
+
+</div>
+<!-- ***** PROJELER ***** -->
+@await Component.InvokeAsync("ProjectComponent")
+
+
+<!-- ***** EĞİTİMLER ***** -->
+@await Component.InvokeAsync("EducationComponent")
+
+
+<!-- ***** Portfolio aktarma ***** -->
+@await Component.InvokeAsync("AboutComponent")
+
+
+<!-- ***** EMAİL BÜLTENİ ***** -->
+
+<div class="gaming-library">
+    <div class="col-lg-12">
+        <div class="heading-section">
+            <h4><em>Email</em> bültenine kaydol</h4>
+        </div>
+        <div class="d-flex justify-content-center">
+            <p class="text-center" style="max-width: 85%;">
+                "Merhaba! E-posta bültenimize abone olarak özel içeriklerden,eğitimlerden anında haberdar
+                olacak,üstelik sürpriz indirimlerden de haberdar olacaksın!
+                Seni aramızda görmek için sabırsızlanıyoruz! 😊"<br>
+               
+            </p>
+
+        </div>
+
+        <div id="email-div">
+            <br>
+            <input type="email" id="email" placeholder="Email Adresini gir">
+
+            <input type="text" style="display: none !important;" id="botInput">
+        </div>
+
+    </div>
+    <div class="col-lg-12">
+        <div class="main-button">
+            <a href="javascript:void(0);" id="subscribeBtn" onclick="subscribeEmail()">Kaydol</a>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        const subscribeEmail = () => {
+            var btn = document.getElementById("subscribeBtn");
+
+
+            if (btn.innerHTML.includes(" ⏳ ")) {
+                toastr.info("İşlemin bitmesini bekleyiniz")
+                return
+            }
+
+            var isBot = document.getElementById("botInput").value;
+            var email = document.getElementById("email").value.trim();
+
+
+            if (isBot.length > 0 || isBot == null)
+                return
+
+            if (email.length > 0) {
+                if (!email.includes("\u0040") || email.length < 3) {
+                    toastr.warning("Lütfen Gerçek Bir E-mail Adresi girin")
+                    return
+                }
+                if (!confirm("Bu işlemi onaylıyormusunuz ?")) {
+                    return
+                }
+
+                btn.innerHTML = " ⏳ "
+
+                setTimeout(function () {
+                }, 200);
+                
+                fetch('/Home/SubscribeToMailAddress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(email)
+                })
+                    .then(
+                        response => response.json()
+                    )
+                    .then(result => {
+                        if (result == true) {
+                            toastr.info("Email adresinizi onaylayınız.Onay için mail adresinizi kontrol edin.")
+                        }
+                        else {
+                            if (result == false)
+                                toastr.warning("İşlem Başarısız,Sunucu Hatası.")
+                            else 
+                                toastr.warning("İşlem Başarısız, " + result)                            
+                        }
+                        setTimeout(function () {
+                            btn.innerHTML = "Kaydol"
+                        }, 500);
+
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        toastr.error("Beklenmedik bir hata oluştu");
+                        return
+
+                    });
+
+                
+            } else {
+                toastr.warning("Email alanını doldurun")
+            }
+        }
+    </script>
+}

@@ -1,0 +1,39 @@
+﻿@model CreateSocialMediaCommand
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+
+<div class="card mt-5">
+    <div class="card-body">
+        <h4 class="header-title">Sosyal Medya Ekle</h4>
+
+        <form asp-controller="Portfolio" asp-action="CreateSocialMedia" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label asp-for="@Model.Name">Adı</label>
+                <input class="form-control" type="text" asp-for="@Model.Name">
+                <span class="text-danger" asp-validation-for="@Model.Name"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="@Model.Url">Url</label>
+                <input class="form-control" type="text" asp-for="@Model.Url">
+                <span class="text-danger" asp-validation-for="@Model.Url"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="@Model.Icon">Icon  </label>
+                <input class="form-control" type="file" accept="image/*" name="IconFile">
+                <span class="text-danger" asp-validation-for="@Model.Icon"></span>
+            </div>
+            
+            <div class="mb-4">
+                <label asp-for="@Model.order">Sıra Numarası(opsiyonel)</label>
+                <input class="form-control" type="number" value="1" asp-for="@Model.order">
+                <span class="text-danger" asp-validation-for="@Model.order"></span>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+
+        </form>
+    </div>
+</div>

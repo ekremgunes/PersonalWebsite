@@ -1,0 +1,133 @@
+﻿@using gunesekremcom.Tools;
+@model List<GetCommentsQueryResult>
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+<div class="row">
+    <div class="col-12 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Yorumlar</h4>
+                <div class="data-tables datatable-primary">
+                    <table id="tabledataComment" class="text-center">
+                        <thead class="text-capitalize">
+                            <tr>
+                                <th>Gönderen</th>
+                                <th>Metin</th>
+                                <th>Mail</th>
+                                <th>Tarih</th>
+
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count > 0)
+                            {
+                                @foreach (var comment in Model)
+                                {
+                                    <tr>
+                                        <td>@comment.Name</td>
+                                        <td>@comment.CommentText</td>
+                                        <td>@comment.Email</td>
+                                        <td onclick="alert(@comment.Date.ToString())">
+                                            @(TimeHelper.Invoke(comment.Date))
+                                        </td>
+                                        <td>
+                                            <a class="mx-2" onclick="DeleteComment(@comment.Id,this)" href="javascript:void(0)">
+                                                <i style="color:red" class="ti-trash"></i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <span style="display:none" class="infoAlert">Henüz bir yanıt yok</span>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section links{
+    <style>
+        /*data tables*/
+        .data-tables .dataTable {
+            width: inherit;
+            border-radius: .5rem;
+        }
+
+        table th {
+            padding: .85rem;
+        }
+
+        div.dataTables_wrapper div.dataTables_length select {
+            width: 4rem;
+        }
+
+        table td {
+            padding: .9rem;
+        }
+
+        table tr td [class^="ti-"] {
+            font-size: 1.3rem;
+            margin: .2rem;
+        }
+    </style>
+}
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $('#tabledataComment').DataTable({
+                "order": [[3, "asc"]],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json',
+                }
+            });
+        });
+
+
+
+        function DeleteComment(id, element) {
+            if (id <= 0) {
+                toastr.warning("Yorum veritabanında bulunamadı")
+            }
+            else {
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '/Blog/DeleteComment',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: {
+                        id: id
+                    },
+                    success: function (result) {
+                        if (result == true) {
+                            setTimeout(function () {
+                                element.parentElement.parentElement.remove()
+                                toastr.info("Yorum Silindi")
+                            }, 50)
+
+                        }
+                        else {
+                            toastr.error(result)
+
+                        }
+
+                    },
+                    error: function () {
+                        toastr.error("Birşeyler ters gitti")
+                    }
+                })
+            }
+        }
+    </script>
+}
+

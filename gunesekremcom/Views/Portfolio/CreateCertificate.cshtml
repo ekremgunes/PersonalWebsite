@@ -1,0 +1,145 @@
+﻿@model CreateCertificateCommand
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12 mt-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-1">Sertifika Ekle</h4>
+                <br>
+                <form asp-action="CreateCertificate" asp-controller="Portfolio" method="post" enctype="multipart/form-data">
+                    
+                    <label class="ml-1" for="CertificateImg">Resim</label>
+
+                    <div class="input-group mb-5">
+
+                        <label class="img-label" for="CertificateImg">
+                            <div class="overlay">
+                            </div>
+                        </label>
+
+                        <input id="CertificateImg" type='file' accept='image/*' name="CertificateImg"
+                               onchange='openFile(event)'>
+
+                        <div class="output-div" id="output-div" title="Tıklayın">
+                            <div id="output-img-div">
+                                <img class="output-img" src="~/images/default.jpg" alt="not found">
+                            </div>
+                            <img class="output" id='output'>
+                        </div>
+                        <span class="text-danger" asp-validation-for="@Model.Image"></span>
+                    </div>
+
+                    <br />
+                    <div class="mb-4">
+                        <label class="ml-1" asp-for="@Model.Title">Sertifika Adı</label>
+                        <input asp-for="@Model.Title" class="form-control " type="text">
+                        <span class="text-danger" asp-validation-for="@Model.Title"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="ml-1" asp-for="@Model.CredentialUrl">Url</label>
+                        <input asp-for="@Model.CredentialUrl" class="form-control " type="text">
+                        <span class="text-danger" asp-validation-for="@Model.CredentialUrl"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="ml-1" asp-for="@Model.Host">Sertifika Alınan yer</label>
+                        <input asp-for="@Model.Host" class="form-control " type="text">
+                        <span class="text-danger" asp-validation-for="@Model.Host"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="ml-1" asp-for="@Model.order">Sıra(opsiyonel)</label>
+                        <input asp-for="@Model.order" class="form-control " value="1" type="number">
+                        <span class="text-danger" asp-validation-for="@Model.order"></span>
+                    </div>
+                    <div><button type="submit" class="btn btn-primary">Kaydet</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section scripts{
+    <script>
+        var openFile = function (event) {
+
+            var input = event.target
+            var path = input.files[0].name
+            var extn = path.substring(path.lastIndexOf('.') + 1).toLowerCase()
+            if (extn == "png" || extn == "jpg" || extn == "jpeg" || extn == "svg") {
+                var reader = new FileReader()
+
+                reader.onload = function () {
+
+                    var dataURL = reader.result
+                    var output = document.getElementById('output')
+                    output.src = dataURL
+                    var outputDiv = document.getElementById("output-div")
+                    var outputImgDiv = document.getElementById("output-img-div")
+
+                    outputImgDiv.style.display = "none"
+                    output.style.display = "inline"
+
+                }
+                reader.readAsDataURL(input.files[0])
+            } else {
+                toastr.info("Desteklenmeyen Dosya Türü")
+            }
+        }
+    </script>
+}
+@section links{
+    <style>
+
+        /*for images*/
+        input[type="file"] {
+            position: absolute;
+            left: -9999rem
+        }
+
+        .overlay {
+            opacity: 0;
+            background: gray;
+            position: absolute;
+            width: 23rem;
+            height: auto !important;
+            border-radius: .7rem;
+        }
+
+        .img-label {
+            border: 2px solid var(--first);
+            display: inline-block;
+            position: absolute;
+            width: 23rem;
+            height: 14rem !important;
+            border-radius: .7rem;
+            cursor: pointer;
+        }
+
+            .img-label:hover #overlay {
+                opacity: 0.8;
+            }
+
+        .output {
+            display: none;
+            z-index: 5;
+            width: 23rem !important;
+            height: auto !important;
+            border-radius: 1rem;
+        }
+
+        .output-img {
+            background-position: center;
+            width: 23rem !important;
+            height: auto !important;
+            border-radius: .7rem;
+        }
+
+        .output-div {
+            margin-bottom: .7rem;
+        }
+    </style>
+}

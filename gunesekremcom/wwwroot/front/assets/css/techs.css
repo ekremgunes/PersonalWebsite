@@ -1,0 +1,118 @@
+@import url("https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css");
+@import url("https://fonts.googleapis.com/css2?family=Jura:wght@500;600;900&display=swap");
+
+/*
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ body {
+  --color: rgba(30, 30, 30);
+  --bgColor: rgba(245, 245, 245);
+  min-height: 100vh;
+  display: grid;
+  align-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  font-family: "Jura", sans-serif;
+  color: var(--color);
+  background: var(--bgColor);
+} */
+.grid {
+    display: inline-block;
+    align-content: center;
+    padding: 2rem;
+    font-family: "Jura", sans-serif;
+    width: 100% !important;
+}
+
+.owl-techs div.item {
+    /* min-width: 4.5rem; */
+    justify-self: center;
+    display: grid;
+    grid-template:
+        "icon"
+        "line"
+        "dot"
+        "title"
+        "descr" 1fr;
+    justify-items: center;
+    align-items: flex-start;
+    text-align: center;
+}
+
+.owl-techs div.item .icon {
+    grid-area: icon;
+    width: 3.5rem;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: 1.8rem;
+    border: 0.4rem solid var(--bgColor);
+    border-radius: 50%;
+    background: var(--accent-color);
+    box-shadow: -0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.45),
+        inset -0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.45);
+}
+
+.owl-techs div.item::before {
+    content: "";
+    grid-area: line;
+    height: 2rem;
+    border-right: 2px dotted currentColor;
+}
+
+.owl-techs div.item::after {
+    content: "";
+    grid-area: dot;
+    width: 1rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--accent-color);
+    justify-self: center;
+    margin-bottom: 0.3rem;
+}
+
+.owl-techs div.item .title {
+    grid-area: title;
+    margin-block: 0.3rem;
+    font-size: small;
+    font-weight: 500;
+    text-align: center;
+    text-transform: capitalize;
+}
+/*  */
+.owl-techs .owl-nav{
+    display: block !important;
+    text-align: center;
+    width: 100%;
+    margin: 1rem;
+    margin-left: 0;
+}
+.owl-prev-next .owl-nav .owl-prev {
+    margin-right: 2.5px;
+}
+
+.owl-prev-next .owl-nav .owl-next {
+    margin-left: 2.5px;
+}
+
+.owl-prev-next .owl-nav .owl-prev span,
+.owl-prev-next .owl-nav .owl-next span {
+    font-size: 35px;
+    display: inline-block;
+    color: #817d7d;
+    opacity: 1;
+    transition: all .3s;
+}
+
+.owl-prev-next .owl-nav .owl-prev span:hover,
+.owl-prev-next .owl-nav .owl-next span:hover {
+    opacity: 1;
+    color: #0087cc;
+}

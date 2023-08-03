@@ -1,0 +1,40 @@
+﻿@model UpdateUserCommand
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+<div class="card mt-5">
+    <div class="card-body">
+        <h4 class="header-title">Hesap Ayarları</h4>
+
+        <form asp-controller="Auth" asp-action="UpdateAccount" method="post">
+            <input type="hidden" asp-for="@Model.Id" value="@Model.Id"/>
+            <div class="mb-4">
+                <label asp-for="@Model.Name">Kullanıcı Adı</label>
+                <input value="@Model.Name" class="form-control" type="text" asp-for="@Model.Name">
+                <span class="text-danger" asp-validation-for="@Model.Name"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="@Model.Email">Mail Adresi</label>
+                <input value="@Model.Email" class="form-control" type="email" asp-for="@Model.Email">
+                <span class="text-danger" asp-validation-for="@Model.Email"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="@Model.NewPassword">Yeni Şifre(opsiyonel)</label>
+                <input class="form-control" type="password" asp-for="@Model.NewPassword">
+                <span class="text-danger" asp-validation-for="@Model.NewPassword"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="@Model.Password">Şifre</label>
+                <input class="form-control" type="password" asp-for="@Model.Password" placeholder="Şifrenizi girin">
+                <span class="text-danger" asp-validation-for="@Model.Password"></span>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+
+        </form>
+    </div>
+</div>

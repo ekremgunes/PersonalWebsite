@@ -1,0 +1,41 @@
+﻿@model GetSocialMediaByIdQueryResult
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+
+<div class="card mt-5">
+    <div class="card-body">
+        <h4 class="header-title">Sosyal Medya Güncelle</h4>
+
+        <form asp-controller="Portfolio" asp-action="UpdateSocialMedia" method="post" enctype="multipart/form-data">
+            <input type="hidden" value="@Model.Id" asp-for="@Model.Id" />
+            <input type="hidden" value="@Model.Icon" asp-for="@Model.Icon" />
+            <div class="mb-4">
+                <label asp-for="@Model.Name">Adı</label>
+                <input class="form-control" type="text" asp-for="@Model.Name" value="@Model.Name">
+                <span class="text-danger" asp-validation-for="@Model.Name"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="@Model.Url">Url</label>
+                <input class="form-control" type="text" asp-for="@Model.Url" value="@Model.Url">
+                <span class="text-danger" asp-validation-for="@Model.Url"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="@Model.Icon">Icon </label>
+                <input class="form-control" type="file" accept="image/*" name="IconFile" value="@Model.Icon">
+                <span class="text-danger" asp-validation-for="@Model.Icon"></span>
+            </div>
+            
+            <div class="mb-4">
+                <label asp-for="@Model.order">Sıra Numarası(opsiyonel)</label>
+                <input class="form-control" type="number" value="@Model.order" asp-for="@Model.order">
+                <span class="text-danger" asp-validation-for="@Model.order"></span>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Güncelle</button>
+            </div>
+
+        </form>
+    </div>
+</div>

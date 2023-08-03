@@ -1,0 +1,43 @@
+﻿@model List<LoadMorePostQueryResult>
+@{
+    Layout = null;
+}
+@if(Model.Count > 0){
+    @foreach (var item in Model)
+    {
+
+
+        <div class="item" style="border-radius: 1px;">
+            <a href="/Blog/Index?slug=@item.Slug" class="">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-4 col-md-3">
+                        <img style="min-height: 98%;" src="~/images/@item.Image" alt="not found">
+
+                    </div>
+                    <div class="text-sm-center text-lg-left col-sm-12 col-lg-8 col-md-9">
+                        <div class="mt-sm-2">
+                            <h3 class="text-lg-left" style="margin-top: 0;">@item.Title</h3>
+                            @Html.Raw(item.Content.Length > 50 ? item.Content.Substring(0, 50) : item.Content.Substring(0, item.Content.Length))
+
+                        </div>
+                        <div class="inline-li-div text-lg-left">
+                            <li><i class="fa-solid fa-people-group"></i> @item.ViewCount z.</li>
+                            <li><i class="fa-sharp fa-solid fa-clock"></i> @item.ReadingTime dk</li>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </a>
+        </div>
+
+
+    }
+}else{
+    <script>
+        $("#LoadMoreDiv").remove()
+        toastr.info("Sona ulaştınız fabrikamız yenilerini üretmeye çalışıyor😊")
+    </script>
+}

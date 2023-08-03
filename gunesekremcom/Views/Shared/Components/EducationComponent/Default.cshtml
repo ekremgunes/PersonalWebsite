@@ -1,0 +1,54 @@
+﻿@model List<EducationComponentQueryResult>
+<div class="gaming-library">
+    <div class="col-lg-12">
+        <div class="heading-section">
+            <h4><em>Popüler</em> Eğitimler</h4>
+        </div>
+        <!-- döngü -->
+        @if (Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                <div class="item course-div">
+
+                    <div>
+                        <img src="~/images/@item.Image" alt="Not found" style="max-width:13rem;max-height:22rem;object-fit:cover">
+                    </div>
+
+                    <div class="text-left">
+                        <h5 class="fs-4">@item.Title</h5>
+                        <p class="text-center">@Html.Raw(item.Definition)</p>
+                        <div class="d-flex justify-content-center">
+
+                            <span class="mx-2"><i class="mr-1 fa-solid fa-user-graduate"></i>@item.StudentCount</span>
+                            <span class="mx-2"><i class="mr-1 fa-solid fa-eye"></i>@item.ViewCount</span>
+                            
+                        </div>
+                    </div>
+
+                    <div class="main-border-button " style="margin-right: 0 !important;">
+                        <a href="/Home/Education?slug=@item.Slug">İncele</a>
+                    </div>
+
+
+                </div>
+
+            }
+        }
+        else
+        {
+            <div class="item course-div">
+                <p class="col-12 text-center">
+                    Yeni eğitimler üzerinde çalışıyorum :)
+                </p>
+            </div>
+        }
+
+
+    </div>
+    <div class="col-lg-12">
+        <div class="main-button">
+            <a href="/Home/Educations">Eğitimler</a>
+        </div>
+    </div>
+</div>

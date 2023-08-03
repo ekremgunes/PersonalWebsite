@@ -1,0 +1,351 @@
+﻿@using gunesekremcom.Tools;
+@model GetPostBySlugQueryResult
+@section title{
+    @Model.Title
+}
+@section meta_description{
+    <meta name="description" content="@Model.Title">
+}
+
+@if (Model != null)
+{
+    <div class="col-12 large-div p-4 mx-2 mb-4">
+        <div class="heading-section " style="border-bottom: 1px solid grey;">
+            <h4 class="text-left pl-1 mb-3">@Model.Title</h4>
+
+        </div>
+        <div class="d-flex m-1 mt-3 row">
+            <div class="mr-3 col-lg-2">
+                <i class="fa-solid fa-calendar-days mr-2"></i>
+                @(TimeHelper.Invoke(Model.Date))
+            </div>
+            <div class="mr-3 col-lg-2"><i class="fa-solid fa-stopwatch mr-2"></i> @Model.ReadingTime dk</div>
+            <div class="mr-3 col-lg-2"><i class="fa-solid fa-eye mr-2"></i>@Model.ViewCount Ziyaret </div>
+        </div>
+
+    </div>
+
+    <div class="row ">
+
+        <div class="col-12  my-3 mb-4">
+
+            <div class="large-div p-5">
+
+                @Html.Raw(Model.Content)
+            </div>
+
+
+        </div>
+
+
+
+        <!-- yorumlar -->
+        <div class="col-12  my-3 mb-4">
+            <div class="large-div p-5" id="comments-area">
+                @if (Model.Comments?.Count > 0)
+                {
+                    foreach (var comment in Model.Comments)
+                    {
+                        <div class="comment-div p-3 my-3">
+                            <div class="p-1 pl-0 ">
+                                <span class="fw-bolder">@comment.Name</span>
+                                <span class="mx-3" title="@comment.Date">@(TimeHelper.Invoke(comment.Date))</span>
+                                <span class="mx-2 reply-btn" onclick="createReply(this,@comment.Id)">
+                                    <i class="fa-solid fa-reply"
+                                       style="font-size: small;"></i>
+                                </span>
+
+                            </div>
+                            <div class="p-1 pl-0" style="font-style: italic !important;word-wrap:break-word">
+                                @comment.CommentText
+                            </div>
+
+                            <!-- yanıtlar -->
+                            @if (comment.Replies?.Count > 0)
+                            {
+                                @foreach (var reply in comment.Replies)
+                                {
+                                    <div class="reply-div comment-div p-3 my-3">
+                                        <div class="p-1 pl-0 ">
+                                            <span class="fw-bolder">@reply.Name </span>
+                                            <span class="ml-3">@(TimeHelper.Invoke(reply.Date))</span>
+
+                                        </div>
+                                        <div class="p-1 pl-0" style="font-style: italic !important;word-wrap:break-word">
+                                            @reply.ReplyText
+                                        </div>
+
+                                    </div>
+                                }
+                            }
+
+
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="col-12 text-center">Daha önce bir yorum atılmamış ilk yorumu atan siz olun.</p>
+                }
+
+
+            </div>
+
+
+        </div>
+        <!-- yorum ekle -->
+        <form action="#" method="post">
+            <div class="col-12 my-3 mb-4 create-comment-div">
+                <div class="row large-div p-5">
+
+                    <div class="col-lg-6 mt-lg-0 col-sm-12">
+                        <label for="">Adınız</label>
+                        <br>
+                        <input id="comment_name" placeholder="Adınız" type="text">
+                    </div>
+                    <div class="col-lg-6 mt-lg-0 col-sm-12 mt-sm-3">
+                        <label for="">Email</label>
+                        <br>
+                        <input id="comment_email" placeholder="email" type="email">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <label for="">Yorumunuz</label>
+                        <br>
+                        <textarea placeholder="Yorumunuz" id="comment_text" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" id="bot" value="" style="display: none;">
+
+                    <div class="col-lg-12 mt-4">
+                        <div class="main-button">
+                            <a href="javascript:void(0)" onclick="sendComment('@Model.Id')">Yorum at</a>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </form>
+
+        <!-- diğer bloglar -->
+        <div class="row mt-5">
+
+            @await Component.InvokeAsync("PostComponent")
+
+            @await Component.InvokeAsync("CategoryComponent")
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="row ">
+
+        <div class="col-12  my-3 mb-4">
+
+            <div class="large-div p-5">
+                İçerik bulunamadı "404"
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+
+    <script>
+
+        const commentsArea = document.querySelector("#comments-area")
+        var regex = /no-reply/i; // "no-reply" ifadesini büyük/küçük harf duyarlılığı olmadan eşleştirir
+
+        function sendComment(postId) {
+            var HoneyPot = document.getElementById("bot").value.trim()
+            if (HoneyPot != "") { //for bots
+                return
+            }
+            if (postId < 1) {
+                toastr.warning("Yorumunuz paylaşılamadı . Post bulunamadı..")
+                return
+            }
+            var name = document.getElementById("comment_name").value.trim()
+            var email = document.getElementById("comment_email").value.trim()
+            var comment = document.getElementById("comment_text").value.trim()
+            if (name.length < 3) {
+                toastr.warning("İsim alanı çok kısa , " + name.length)
+            } else if (email.length < 5) {
+                toastr.warning("Email çok kısa , " + email.length)
+            } else if (comment.length < 10) {
+                toastr.warning("Yorumunuz çok kısa , En az 10 karakter olmalı. " + comment.length)
+            } else if (!email.includes("\u0040")) {
+                toastr.warning("Lütfen gerçek bir email adresi kullanın.")
+            }
+
+            else if (regex.test(email)) {
+                toastr.warning("Lütfen gerçek bir email adresi kullanın, no-reply maillere dönüş yapılmayacaktır.");
+                return;
+            }
+            else {
+                if(!confirm("Yorumunuz Gönderilecektir Onaylıyormusunuz?"))
+                 return;
+
+                const model = {
+                    Name: name,
+                    Email: email,
+                    CommentText: comment,
+                    PostId: postId
+                }
+
+                fetch('/Blog/CreateComment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(model)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data == true) {
+                            toastr.info("Yorumun başarıyla gönderildi " + name + " . Yorum için teşekkürler.")
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            toastr.warning(data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        toastr.error("Beklenmedik bir hata oluştu");
+                    });
+
+            }
+        }
+
+        function sendReply(commentId) {
+            var HoneyPot = document.getElementById("reply_bot").value.trim()
+            if (HoneyPot != "") { //for bot users
+                return
+            }
+            if (commentId < 1) {
+                toastr.warning("Yanıt paylaşılamadı, yorum bulunamadı.")
+                return
+            }
+            var name = document.getElementById("reply_name").value.trim()
+            var email = document.getElementById("reply_email").value.trim()
+            var reply = document.getElementById("reply_text").value.trim()
+            if (name.length < 3) {
+                toastr.warning("İsim alanı çok kısa ," + name.length)
+            } else if (email.length < 5) {
+                toastr.warning("Email çok kısa ," + email.length)
+            } else if (reply.length < 10) {
+                toastr.warning("Yanıtınız çok kısa ," + reply.length)
+            }
+            else {
+                if (!email.includes("\u0040")) {
+                    toastr.warning("Lütfen gerçek bir email adresi kullanın")
+                    return
+                }
+                if (regex.test(email)) { //no-reply kontrol
+                    toastr.warning("Lütfen gerçek bir email adresi kullanın, no-reply maillere dönüş yapılmayacaktır.");
+                    return;
+                }
+                if (!confirm("Yanıtınız Gönderilecektir Onaylıyormusunuz?"))
+                    return;
+
+                const model = {
+                    Name: name,
+                    Email: email,
+                    ReplyText: reply,
+                    CommentId: commentId
+                }
+
+                fetch('/Blog/CreateReply', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(model)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data == true) {
+                            toastr.info("Yanıtın başarıyla gönderildi " + name + " . Yanıtın için teşekkürler.")
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1350);
+                        } else {
+                            toastr.warning(data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        toastr.error("Beklenmedik bir hata oluştu");
+                    });
+
+
+            }
+        }
+
+        function createReply(param, commentId) {
+            const replyForm = document.querySelector("#reply-form")
+            if (replyForm) {
+                replyForm.remove()
+            }
+            const replyDivHTML =
+                `
+                                    <form action="#" method="post" id="reply-form">
+                                              <div class="col-12 my-3 mb-4 create-comment-div">
+                                                <div class="row large-div p-sm-2 p-lg-5">
+
+                                                  <div class="col-lg-6 mt-lg-0 col-sm-12">
+                                                    <label for="">Adınız</label>
+                                                    <br>
+                                                    <input id="reply_name" placeholder="Adınız" type="text">
+                                                  </div>
+                                                  <div class="col-lg-6 mt-lg-0 col-sm-12 mt-sm-3">
+                                                    <label for="">Email</label>
+                                                    <br>
+                                                    <input id="reply_email" placeholder="email" type="email">
+                                                  </div>
+                                                  <div class="col-12 mt-3">
+                                                    <label for="">Yanıtınız</label>
+                                                    <br>
+                                                    <textarea placeholder="Yanıtınız" id="reply_text" rows="3"></textarea>
+                                                  </div>
+                                                  <input type="hidden" id="reply_bot" value="" style="display: none;">
+
+                                                  <div class="col-lg-12 mt-4">
+                                                    <div class="main-button">
+                                                      <a href="javascript:void(0)" onclick="sendReply(${commentId})">Yanıtla</a>
+                                                    </div>
+                                                  </div>
+
+                                                </div>
+
+
+                                              </div>
+                                            </form>
+                                    `;
+            var repliedDiv = param.parentElement.parentElement
+            $(repliedDiv).append(replyDivHTML)
+
+        }
+
+        //viewcount
+        window.addEventListener("load", function () {
+            setTimeout(function () {
+                fetch('/Blog/InsertViewCount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(@Model?.Id)
+                })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }, 2500)
+        }); 
+
+    </script>
+
+}

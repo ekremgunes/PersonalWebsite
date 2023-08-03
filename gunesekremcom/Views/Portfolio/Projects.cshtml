@@ -1,0 +1,143 @@
+﻿@model List<GetProjectsQueryResult>
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+<div class="row">
+    <div class="col-12 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Projeler</h4>
+                <div class="data-tables datatable-primary">
+                    <table id="tabledataProject" class="text-center">
+                        <thead class="text-capitalize">
+                            <tr>
+                                <th>Resim</th>
+                                <th>Adı</th>
+                                <th>Yıldız</th>
+                                <th>Sıra</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count > 0)
+                            {
+                                foreach (var project in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="~/images/@project.Image" width="100rem" />
+                                        </td>
+                                        <td>@project.Title</td>
+                                        <td>
+                                            @for (int i = 0; i < project.Star; i++)
+                                            {
+                                                <span>⭐</span>
+                                            }
+                                        </td>
+                                        <td>@project.Order</td>
+                                        <td>
+                                            <a class="mx-2" onclick="DeleteProject(@project.Id,this)" href="javascript:void(0)">
+                                                <i style="color:red" class="ti-trash"></i>
+                                            </a>
+                                            <a class="mx-2" href="/Portfolio/UpdateProject/@project.Id">
+                                                <i class="ti-pencil-alt"></i>
+                                            </a>
+                                            <a class="mx-2" href="/Home/Project?slug=@project.Slug">
+                                                <i class="ti-eye"></i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <span style="display:none" class="infoAlert">Henüz bir projeniz yok</span>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section links{
+
+    <style>
+        /*data tables*/
+        .data-tables .dataTable {
+            width: inherit;
+            border-radius: .5rem;
+        }
+
+        table th {
+            padding: .85rem;
+        }
+
+        div.dataTables_wrapper div.dataTables_length select {
+            width: 4rem;
+        }
+
+        table td {
+            padding: .9rem;
+        }
+
+        table tr td [class^="ti-"] {
+            font-size: 1.3rem;
+            margin: .2rem;
+        }
+    </style>
+}
+@section scripts{
+
+
+    <script>
+        $(document).ready(function () {
+            $('#tabledataProject').DataTable({
+                "order": [[3, "asc"]],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json',
+                }
+            });
+        });
+
+
+
+        function DeleteProject(id, element) {
+            if (id <= 0) {
+                toastr.warning("Proje bulunamadı")
+            }
+            else {
+                if (!confirm("Bu işlemi onaylıyormusunuz ?")) {
+                    return
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/Portfolio/DeleteProject',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: {
+                        id: id
+                    },
+                    success: function (result) {
+                        if (result == true) {
+                            setTimeout(function () {
+                                element.parentElement.parentElement.remove()
+                                toastr.info("Proje Silindi")
+                            }, 50)
+                        }
+                        else {
+                            toastr.error(result)
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Birşeyler ters gitti")
+                    }
+                })
+            }
+        }
+    </script>
+}
+

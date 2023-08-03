@@ -1,0 +1,132 @@
+﻿@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+<div class="row">
+    <div class="col-12 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Sayfalar</h4>
+                <div class="data-tables datatable-primary">
+                    <table id="tabledataSaying" class="text-center">
+                        <thead class="text-capitalize">
+                            <tr>
+                                <th>Sayfa</th>
+                                <th>Görüntüle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>Anasayfa</td>
+                                <td>
+
+                                    <a class="mx-2" href="/Home/Index">
+                                        <i class="ti-eye"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>Projeler</td>
+                                <td>
+
+                                    <a class="mx-2" href="/Home/Projects">
+                                        <i class="ti-eye"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>Eğitimler</td>
+                                <td>
+
+                                    <a class="mx-2" href="/Home/Educations">
+                                        <i class="ti-eye"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td>Blog</td>
+                                <td>
+
+                                    <a class="mx-2" href="/Blog/Explorer">
+                                        <i class="ti-eye"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>Kategoriler</td>
+                                <td>
+
+                                    <a class="mx-2" href="/Home/Categories">
+                                        <i class="ti-eye"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>Portföy</td>
+                                <td>
+
+                                    <a class="mx-2" href="/Portfolio/Index">
+                                        <i class="ti-eye"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section links{
+
+    <style>
+        /*data tables*/
+        .data-tables .dataTable {
+            width: inherit;
+            border-radius: .5rem;
+        }
+
+        table th {
+            padding: .85rem;
+        }
+
+        div.dataTables_wrapper div.dataTables_length select {
+            width: 4rem;
+        }
+
+        table td {
+            padding: .9rem;
+        }
+
+        table tr td [class^="ti-"] {
+            font-size: 1.3rem;
+            margin: .2rem;
+        }
+    </style>
+}
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $('#tabledataSaying').DataTable({
+                "order": [[0, "asc"]],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json',
+                }
+            });
+        });
+    </script>
+}
+

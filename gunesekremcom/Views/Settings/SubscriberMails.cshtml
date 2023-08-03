@@ -1,0 +1,362 @@
+﻿@model List<GetEmailAddressesQueryResult>
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+<div class="row">
+    <div class="col-12 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Email Bülteni</h4>
+                <div>
+                    <div class="mb-2">
+                        <input class="form-control" type="text" id="inputField" placeholder="Konu *" />
+
+                    </div>
+                    <div class="mb-3">
+                        <textarea id="editor" class="form-control" placeholder="İçerik *"></textarea>
+
+                    </div>
+                    <div>
+                        <button class="btn-primary p-1 px-2 mr-5" id="submitButton">Gönder</button>
+                        <button class="btn-danger p-1 px-2" id="deleteButton">Seçili Sütunları Sil</button>
+                    </div>
+                </div>
+                <div class="data-tables datatable-primary mt-5">
+                    <table id="tableMails" class="text-center">
+                        <thead class="text-capitalize">
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Tarih</th>
+                                <th>Onay</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count > 0)
+                            {
+                                @foreach (var email in Model)
+                                {
+                                    <tr style="background-color:@(email.isConfirmed == false ? "lightgray" : "")">
+                                        <td>@email.Id</td>
+                                        <td>@email.Email</td>
+                                        <td>@email.SubDate</td>
+                                        <td>@(email.isConfirmed == true ? "✅" : "⛔")</td>
+                                        <td>
+                                            <a class="mx-2" onclick="DeleteEmailAddress(@email.Id,this)" href="javascript:void(0)">
+                                                <i style="color:red" class="ti-trash"></i>
+                                            </a>
+                                            <a target="_blank" class="mx-2" href="mailto:@(email.Email)">
+                                                <i class="ti-direction"></i>
+                                            </a>
+                                            <a class="mx-2" onclick="ConfirmEmailAddress('@email.ConfirmCode.ToString()',this)" href="javascript:void(0)">
+                                                <i style="color:lawngreen" class=" ti-check-box"></i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <span style="display:none" class="infoAlert">Henüz bir aboneniz yok</span>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section links{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css">
+
+    <style>
+        /*data tables*/
+        .data-tables .dataTable {
+            width: inherit;
+            border-radius: .5rem;
+        }
+
+        table th {
+            padding: .85rem;
+        }
+
+        div.dataTables_wrapper div.dataTables_length select {
+            width: 4rem;
+        }
+
+        table td {
+            padding: .9rem;
+        }
+
+        table tr td [class^="ti-"] {
+            font-size: 1.3rem;
+            margin: .2rem;
+        }
+        /* Seçilen satırları renklendirme */
+        #tableMails tbody tr.selected {
+            background-color: #dceaff !important;
+            border: 1px solid !important;
+        }
+    </style>
+}
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#editor').summernote({
+                height: 150
+            });
+
+            var table = $('#tableMails').DataTable({
+                "order": [[2, "asc"]],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json',
+                },
+                select: {
+                    style: 'multi' // Çoklu seçim için multi stilini kullanıyoruz
+                }
+            });
+
+
+            $('#tableMails tbody').on('click', 'tr', function () {
+                $(this).toggleClass('selected');
+            });
+
+            //Send Mail
+            $('#submitButton').click(function () {
+                var btn = document.getElementById("submitButton");
+
+
+                if (btn.innerHTML.includes(" ⏳ ")) {
+                    toastr.info("İşlemin bitmesini bekleyiniz")
+                    return
+                }
+                var selectedRows = table.rows('.selected').data();
+
+                var inputVal = $('#inputField').val().trim();
+                var textareaVal = $('#editor').val().trim();
+                if (inputVal.length < 1) {
+                    toastr.error("Konu Başlığı Boş Bırakılamaz")
+                    return
+                }
+                if (textareaVal.length < 1) {
+                    toastr.error("Mail İçeriği Boş Bırakılamaz")
+                    return
+                }
+                var selectedIds = selectedRows.toArray().map(function (row) {
+                    return row[0]; // Burada ID sütunu için 0 kullanıyoruz, eğer farklı bir sütun kullanıyorsanız ona göre güncelleyin.
+                });
+                var IdCount = selectedIds.length;
+                if (!confirm("Mail Gönderme İşlemini Onaylıyormusunuz ? ")) {
+                    return;
+                }
+                if (IdCount == 0) {
+                    if (!confirm("Mail Tüm Listeye Gönderilecektir Onaylıyormusunuz")) {
+                        return
+                    }
+                }
+                if (IdCount > 49) {
+                    toastr.warning(`Gönderilecek Mail Sayısı ${IdCount}. İşlem Uzun Sürebilir, Smtp Hesabınızdaki haklarınızı kontrol edin.`)
+                }
+                toastr.info("İşlem Başlatılıyor,Lütfen Bekleyiniz")
+                btn.innerHTML = " ⏳ ";
+
+                var model = {
+                    Subject: inputVal,
+                    Body: textareaVal,
+                    MailIds: selectedIds
+                };
+                console.log(model)
+                console.log(JSON.stringify(model))
+
+                fetch('/Settings/SendEmails', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(model)
+                })
+
+                    .then(
+                        response => response.json()
+                    )
+                    .then(result => {
+                        if (result == true) {
+                            toastr.success("İşlem Başarıyla Tamamlandı")
+
+                            setTimeout(function () {
+                                document.getElementById('inputField').value = "";
+                                document.getElementById('editor').value = "";
+                                btn.innerHTML = " Gönder ";
+
+                            }, 500);
+
+                        }
+                        else {
+                            toastr.error(result)
+
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        toastr.error("Beklenmedik bir hata oluştu");
+                        return
+
+                    });
+            });
+
+            //delete multi
+            $('#deleteButton').click(function () {
+                var btn = document.getElementById("deleteButton");
+
+
+                if (btn.innerHTML.includes(" ⏳ ")) {
+                    toastr.info("İşlemin bitmesini bekleyiniz")
+                    return
+                }
+                var selectedRows = table.rows('.selected').data();
+
+
+                var selectedIds = selectedRows.toArray().map(function (row) {
+                    return row[0]; // Burada ID sütunu için 0 kullanıyoruz, eğer farklı bir sütun kullanıyorsanız ona göre güncelleyin.
+                });
+                var IdCount = selectedIds.length;
+                if (IdCount <= 0) {
+                    toastr.error("Silmek İçin Hiçbir Sütun Seçilmedi.")
+                    return
+                }
+                if (!confirm("Silme İşlemini Onaylıyormusunuz ?")) {
+                    return
+                }
+                toastr.info("İşlem Başladı , Lütfen Bekleyiniz")
+                btn.innerHTML = " ⏳ "
+
+                fetch('/Settings/DeleteEmailAddresses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(selectedIds)
+                })
+
+                    .then(
+                        response => response.json()
+                    )
+                    .then(result => {
+                        if (result == true) {
+                            toastr.success("İşlem Başarıyla Tamamlandı,Sayfa Yenilenecektir.")
+
+                            setTimeout(function () {
+                                window.location.reload()
+                            }, 2000)
+
+
+                        }
+                        else {
+                            toastr.error(result)
+                            btn.innerHTML = " Seçili Sütunları Sil "
+
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        toastr.error("Beklenmedik bir hata oluştu");
+                        btn.innerHTML = " Seçili Sütunları Sil "
+
+                        return
+
+                    });
+            });
+
+        });
+
+
+
+        function DeleteEmailAddress(id, element) {
+            if (id <= 0) {
+                toastr.warning("id bulunamadı")
+            }
+            else {
+                if (!confirm("Bu işlemi onaylıyormusunuz ?")) {
+                    return
+                }
+                fetch('/Settings/DeleteEmailAddress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(id)
+                })
+                    .then(
+                        response => response.json()
+                    )
+                    .then(result => {
+                        if (result == true) {
+                            setTimeout(function () {
+                                element.parentElement.parentElement.remove()
+                                toastr.info("Mail Silindi")
+                            }, 50)
+
+                        }
+                        else {
+                            toastr.error(result)
+
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        toastr.error("Beklenmedik bir hata oluştu");
+                        return
+
+                    });
+            }
+        }
+
+        //Confirm
+        function ConfirmEmailAddress(ConfirmCode, element) {
+            if (!confirm("Bu işlemi onaylıyormusunuz ? Geri Alınamaz.")) {
+                return
+            }
+            fetch('/Settings/ConfirmEmailAddress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ConfirmCode)
+            })
+                .then(
+                    response => response.json()
+                )
+                .then(result => {
+                    if (result == true) {
+                        toastr.success("Mail Doğrulandı")
+                        const parentElement = element.parentElement.parentElement;
+                        parentElement.innerHTML = parentElement.innerHTML.replace(/⛔/g, "✅");
+                    }
+                    else {
+                        toastr.error("İşlem Başarısız")
+                    }
+
+                })
+                .catch(error => {
+                    console.error(error);
+                    toastr.error("Beklenmedik bir hata oluştu");
+                    return
+
+                });
+
+        }
+
+    </script>
+}

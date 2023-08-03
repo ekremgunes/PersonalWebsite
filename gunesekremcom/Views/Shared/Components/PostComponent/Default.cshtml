@@ -1,0 +1,40 @@
+﻿@model List<PostComponentQueryResult>
+<div class="col-lg-9">
+    <div class="featured-games blogs header-text">
+        <div class="heading-section">
+            <h4><em>Popüler</em> <a href="/Blog/Explorer" style="color: #0087cc;">Paylaşımlar</a></h4>
+
+        </div>
+        @if (Model.Count > 0)
+        {
+            <div class="owl-features owl-carousel">
+
+                @foreach (var item in Model)
+                {
+                <div class="item">
+                    <a href="/Blog/Index?slug=@item.Slug">
+                        <div class="thumb">
+                            <img style="object-fit:cover" src="~/images/@item.Image" alt="not found">
+                            <div class="hover-effect">
+                                <h6>@item.ViewCount ziyaret</h6>
+                            </div>
+                        </div>
+                        <h4 style="word-wrap:break-word" class="col-12">@item.Title</h4>
+                        <ul>
+                            <li><i class="fa fa-clock"></i> @item.ReadingTime dk</li>
+                        </ul>
+                    </a>
+
+                </div>
+                }
+
+
+
+            </div>
+        }
+        else
+        {
+            <h2 class="text-center col-12">Herhangi bir paylaşım yapılmamıştır.</h2>
+        }
+    </div>
+</div>

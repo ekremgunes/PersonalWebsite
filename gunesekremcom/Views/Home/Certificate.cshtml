@@ -1,0 +1,33 @@
+﻿@model GetCertificateByIdQueryResult
+@section title{
+    @Model?.Title by @Model?.Host
+}
+
+@if (Model != null)
+{
+    
+<div class="gaming-library" style="margin-top: 1rem !important; padding: 1rem;">
+    <div class="heading-section">
+        <h4 style="margin-bottom: 1px;">@Model.Title / @Model.Host</h4>
+    </div>
+    <br>
+    <div class="col-lg-12 certificate" style="background: url('/images/@Model.Image');">
+    </div>
+
+</div>
+<div class="col-lg-12 text-center">
+
+    <div class="main-button mt-2">
+        <a href="@Model.CredentialUrl">Crendetial</a>
+    </div>
+</div>
+}else{
+    <div class="gaming-library" style="margin-top: 1rem !important; padding: 1rem;">
+        <div class="heading-section text-center">
+            <h4>Sertifika bulunamadı . "404"</h4>
+        </div>
+        <br>
+       
+
+    </div>
+}

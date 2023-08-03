@@ -1,0 +1,67 @@
+﻿@model GetProjectByIdQueryResult
+@section title{
+    @Model.?Title
+}
+
+
+@if (Model != null)
+{
+    <div class="row  m-2 large-div">
+        <div class="left-cover-img col-lg-6 col-md-6 col-sm-12"
+             style="background-image: url(/images/@Model.Image); ">
+        </div>
+        <div class="col-lg-6 p-4 col-md-6 col-sm-12">
+            <h2 style="word-wrap:break-word">@Model.Title</h2>
+            <br>
+            <p class="text-center">
+                @Html.Raw(Model.Definition)
+            </p>
+            @if (Model.Url?.Length > 0)
+            {
+                <div class="col-12 coupon-btn mt-4 mb-2 text-center">
+                    <a href="@Model.Url">
+                        <i class="fa-brands fa-github fa-fade mr-2"></i>
+                        Github
+                        <i class="fa-brands fa-github fa-fade mr-2"></i>
+                    </a>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    <div class="row mt-1">
+
+        <div class="col-12  my-3 mb-4">
+
+            <div class="large-div p-5 text-center">
+                @Html.Raw(Model.Content)
+            </div>
+
+
+        </div>
+        <div class="col-12 row text-center coupon-btn">
+            <div class="col-12 m-3"><a href="/Home/Projects" style="font-weight: normal;">Daha fazla proje</a></div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="row mt-1">
+
+        <div class="col-12  my-3 mb-4">
+
+            <div class="large-div p-5">
+                <p class="text-center">Proje bulunamadı</p>
+            </div>
+
+
+        </div>
+        <div class="col-12 row text-center coupon-btn">
+            <div class="col-12 m-3"><a href="/Home/Projects" style="font-weight: normal;">Daha fazla proje</a></div>
+        </div>
+    </div>
+}

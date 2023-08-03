@@ -1,0 +1,27 @@
+﻿@model CreateSayingCommand
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+
+<div class="card mt-5">
+    <div class="card-body">
+        <h4 class="header-title">Söz Oluştur</h4>
+
+        <form asp-controller="Settings" asp-action="CreateSaying" method="post">
+            <div class="mb-4">
+                <label asp-for="@Model.Owner">Söz Sahibi</label>
+                <input class="form-control" type="text" asp-for="@Model.Owner">
+                <span class="text-danger" asp-validation-for="@Model.Owner"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="@Model.Content">Söz </label>
+                <textarea class="form-control" type="text" rows="4" asp-for="@Model.Content"></textarea>
+                <span class="text-danger" asp-validation-for="@Model.Content"></span>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+
+        </form>
+    </div>
+</div>

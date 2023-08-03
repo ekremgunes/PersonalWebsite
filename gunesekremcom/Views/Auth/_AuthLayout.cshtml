@@ -1,0 +1,80 @@
+﻿<!doctype html>
+<html class="no-js" lang="tr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@await RenderSectionAsync("title",true)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="~/dashboard/assets/images/icon/favicon.ico">
+    <link rel="stylesheet" href="~/dashboard/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/dashboard/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/dashboard/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="~/dashboard/assets/css/metisMenu.css">
+    <link rel="stylesheet" href="~/dashboard/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/dashboard/assets/css/slicknav.min.css">
+    <!-- amchart css -->
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <!-- others css -->
+
+    <link rel="stylesheet" href="~/dashboard/assets/css/typography.css">
+    <link rel="stylesheet" href="~/dashboard/assets/css/default-css.css">
+    <link rel="stylesheet" href="~/dashboard/assets/css/styles.css">
+    <link rel="stylesheet" href="~/dashboard/assets/css/responsive.css">
+    <!-- modernizr css -->
+    <script src="~/dashboard/assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="login-area login-s2">
+        <div class="container">
+            <div class="login-box ptb--100">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    @*alert*@
+    <div style="display:none">
+        @Html.Raw(TempData["alerts"])
+    </div>
+    <!-- login area end -->
+    <!-- jquery latest version -->
+    <script src="~/dashboard/assets/js/vendor/jquery-2.2.4.min.js"></script>
+    <!-- bootstrap 4 js -->
+    <script src="~/dashboard/assets/js/popper.min.js"></script>
+    <script src="~/dashboard/assets/js/bootstrap.min.js"></script>
+    <script src="~/dashboard/assets/js/owl.carousel.min.js"></script>
+    <script src="~/dashboard/assets/js/metisMenu.min.js"></script>
+    <script src="~/dashboard/assets/js/jquery.slimscroll.min.js"></script>
+    <script src="~/dashboard/assets/js/jquery.slicknav.min.js"></script>
+
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script>
+        const Infoalerts = document.querySelectorAll(".infoAlert")
+        Infoalerts.forEach((alert) => {
+            toastr.info(alert.textContent)
+        })
+        const Successalerts = document.querySelectorAll(".successAlert")
+        Successalerts.forEach((alert) => {
+            toastr.success(alert.textContent)
+        })
+        const Warningsalerts = document.querySelectorAll(".warningAlert")
+        Warningsalerts.forEach((alert) => {
+            toastr.warning(alert.textContent)
+        })
+        const Erroralerts = document.querySelectorAll(".errorAlert")
+        Erroralerts.forEach((alert) => {
+            toastr.error(alert.textContent)
+        })
+
+    </script>
+    <!-- others plugins -->
+    <script src="~/dashboard/assets/js/plugins.js"></script>
+    <script src="~/dashboard/assets/js/scripts.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+
+</html>

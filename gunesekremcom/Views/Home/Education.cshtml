@@ -1,0 +1,93 @@
+﻿@model GetEducationBySlugQueryResult
+@section title{
+    @Model?.Title
+}
+
+@if (Model != null)
+{
+    <div class="row mt-5 m-2 large-div">
+        <div class="left-cover-img col-lg-6 col-md-6 col-sm-12"
+             style="background-image: url(/images/@Model.Image); ">
+        </div>
+        <div class="col-lg-6 p-4 col-md-6 col-sm-12">
+            <h2>@Model.Title</h2>
+            <br>
+            <p class="text-center">
+                @Html.Raw(Model.Definition)
+            </p>
+            @if (Model.CouponCode?.Length > 0)
+            {
+                <div class="col-12 coupon-btn mt-4 mb-2 text-center">
+                    <a href="@Model.CouponCode">
+                        <i class="fa-regular fa-hourglass-half fa-flip mr-2"></i>
+                        Kupon
+                        <i class="fa-regular fa-hourglass-half fa-flip ml-2"></i>
+                    </a>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    <div class="row ">
+
+        <div class="col-12  my-3 mb-4">
+
+            <div class="large-div p-5">
+                @Html.Raw(Model.Content)
+            </div>
+
+
+        </div>
+        <div class="col-12 row text-center coupon-btn">
+            @if (Model.CouponCode?.Length > 0)
+            {
+                <div class="col-12 m-3"><a href="@Model.CouponCode">İndirim Kuponu </a></div>
+
+            }
+            <div class="col-12 m-3"><a href="/Home/Educations" style="font-weight: normal;">Daha fazla kurs</a></div>
+
+
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="row ">
+
+        <div class="col-12  my-3 mb-4">
+
+            <div class="large-div p-5">
+                Kurs Bulunamadı. "404"
+            </div>
+
+
+        </div>
+        <div class="col-12 row text-center coupon-btn">
+            <div class="col-12 m-3"><a href="/Home/Educations" style="font-weight: normal;">Daha fazla kurs</a></div>
+
+        </div>
+    </div>
+}
+@section scripts{
+    <script>
+        //viewcount
+        window.addEventListener("load", function () {
+            setTimeout(function () {
+                fetch('/Portfolio/InsertEducationViewCount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(@Model?.Id)
+                })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }, 2400)
+        });
+    </script>
+}

@@ -1,0 +1,27 @@
+﻿@model GetSeoQueryResult
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+
+<div class="col-12 mt-5 mb-2">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="header-title">Seo Güncelle</h4>
+            <form asp-action="Seo" asp-controller="Settings">
+                <textarea placeholder='<meta name="description" content="Ekrem Güneş" />'
+                          style="min-height: 25rem;height:auto" class="form-control form-control-lg" asp-for="@Model.SeoHTML">
+                    @Model.SeoHTML
+                </textarea>
+
+                <br />
+                <span class="text-danger" asp-validation-for="@Model.SeoHTML"></span>
+
+                <br/>
+                <div>
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

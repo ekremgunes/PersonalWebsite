@@ -1,0 +1,25 @@
+﻿@model GetCategoryByIdQueryResult
+@{
+    Layout = "../Shared/_DashboardLayout.cshtml";
+}
+
+
+<div class="card mt-5">
+    <div class="card-body">
+        <h4 class="header-title">Kategori Güncelle</h4>
+
+        <form asp-controller="Blog" asp-action="UpdateCategory" method="post">
+            <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
+            <div class="mb-4">
+                <label asp-for="@Model.Title">Kategori Adı</label>
+                <input class="form-control" type="text" asp-for="@Model.Title" value="@Model.Title">
+                <span class="text-danger" asp-validation-for="@Model.Title"></span>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-primary">Güncelle</button>
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <title>@await RenderSectionAsync("title",true)</title>
+    
+    @await Component.InvokeAsync("SeoComponent")
+
+    @await RenderSectionAsync("meta_description",false)
+    
+    @await Component.InvokeAsync("GetIconComponent")
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="/front/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Fontawesome cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/front/assets/css/gunesekrem_style.css">
+    <link rel="stylesheet" href="~/front/assets/css/owl.css">
+    <link rel="stylesheet" href="~/front/assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css">
+    <link rel="stylesheet" href="~/front/assets/css/3d.css">
+    <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
+    @await RenderSectionAsync("links",false)
+
+
+
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B0DM9VSH4N"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-B0DM9VSH4N');
+    </script>
+
+
+
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+    <!-- ***** NAV ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="/Home/Index" class="logo pl-2">
+                            @await Component.InvokeAsync("GetLogoComponent")
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                            
+
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            
+                            <div class="gtranslate_wrapper"></div>
+
+                            <li><a href="/Home/Index" class="active">Anasayfa</a></li>
+                            <li><a href="/Blog/Explorer">Blog</a></li>
+                            <li><a href="/Home/Educations">Eğitimler</a></li>
+                            <li><a href="/Home/Projects">Projeler</a></li>
+                            <li>
+                                <a href="/Portfolio/Index">
+                                    Profil
+                                    <img src="~/front/assets/images/profile-header.jpg" alt="not found">
+                                </a>
+                            </li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-content">
+
+                    @RenderBody()
+                   
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>
+                        Copyright ©
+                        <script>var date = new Date(); document.write(date.getFullYear())</script>
+                        <a href="#">Ekrem Güneş</a> . All rights reserved .
+
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    @*alert*@
+    <div style="display:none">
+        @Html.Raw(TempData["alerts"])
+    </div>
+    
+    <!--Translete-->
+        
+    <script>window.gtranslateSettings = { "default_language": "tr", "native_language_names": true, "detect_browser_language": true, "wrapper_selector": ".gtranslate_wrapper", "switcher_horizontal_position": "right" }</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+   
+    <!--Translete-->
+
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/front/vendor/jquery/jquery.min.js"></script>
+    <script src="~/front/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/front/assets/js/isotope.min.js"></script>
+    <script src="~/front/assets/js/owl-carousel.js"></script>
+    <script src="~/front/assets/js/tabs.js"></script>
+    <script src="~/front/assets/js/popup.js"></script>
+    <script src="~/front/assets/js/custom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js"></script>
+    <script src="~/front/assets/js/constants.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script src="~/front/assets/js/3d.js"></script>
+    <script src="~/front/assets/js/visitor.js"></script>
+    @*alerts*@
+    <script>
+        const Infoalerts = document.querySelectorAll(".infoAlert")
+        Infoalerts.forEach((alert) => {
+            toastr.info(alert.textContent)
+        })
+        const Successalerts = document.querySelectorAll(".successAlert")
+        Successalerts.forEach((alert) => {
+            toastr.success(alert.textContent)
+        })
+        const Warningsalerts = document.querySelectorAll(".warningAlert")
+        Warningsalerts.forEach((alert) => {
+            toastr.warning(alert.textContent)
+        })
+        const Erroralerts = document.querySelectorAll(".errorAlert")
+        Erroralerts.forEach((alert) => {
+            toastr.error(alert.textContent)
+        })
+
+    </script>
+    @await RenderSectionAsync("scripts",false)
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+
+========= Error Logging =======
+=========== Start ============= 
+Error Message: E mail gönderme işlemi başarısız. 
+Date : 30.07.2023 23:12:15
+=========== End =============
+========= Error Logging =======
+=========== Start ============= 
+Error Message: E mail gönderme işlemi başarısız. 
+Date : 31.07.2023 12:55:21
+=========== End =============
+========= Error Logging =======
+=========== Start ============= 
+Error Message: Error in processing. The server response was: ESMTP MailEnable Service temporarily refused connection at 07/31/23 12:58:49 from IP (94.55.168.118) because the server is too busy.
+Error Source: System.Private.CoreLib
+Error Code: 0
+Stack Trace: /Settings/SendEmails
+Date : 31.07.2023 12:58:49
+=========== End =============
+========= Error Logging =======
+=========== Start ============= 
+Error Message: Error in processing. The server response was: ESMTP MailEnable Service temporarily refused connection at 07/31/23 12:59:29 from IP (94.55.168.118) because the server is too busy.
+Error Source: System.Private.CoreLib
+Error Code: 0
+Stack Trace: /Settings/SendEmails
+Date : 31.07.2023 12:59:29
+=========== End =============
+========= Error Logging =======
+=========== Start ============= 
+Error Message: Error in processing. The server response was: ESMTP MailEnable Service temporarily refused connection at 07/31/23 13:00:02 from IP (94.55.168.118) because the server is too busy.
+Error Source: System.Private.CoreLib
+Error Code: 0
+Stack Trace: /Settings/SendEmails
+Date : 31.07.2023 13:00:03
+=========== End =============
+========= Error Logging =======
+=========== Start ============= 
+Error Message: Error in processing. The server response was: ESMTP MailEnable Service temporarily refused connection at 07/31/23 13:08:41 from IP (94.55.168.118) because the server is too busy.
+Error Source: System.Private.CoreLib
+Error Code: 0
+Stack Trace: /Settings/SendEmails
+Date : 31.07.2023 13:08:41
+=========== End =============
+========= Error Logging =======
+=========== Start ============= 
+Error Message: Error in processing. The server response was: ESMTP MailEnable Service temporarily refused connection at 07/31/23 13:17:27 from IP (94.55.168.118) because the server is too busy.
+Error Source: System.Private.CoreLib
+Error Code: 0
+Stack Trace: /Settings/SendEmails
+Date : 31.07.2023 13:17:28
+=========== End =============
+========= Error Logging =======
+=========== Start ============= 
+Error Message: Error in processing. The server response was: ESMTP MailEnable Service temporarily refused connection at 07/31/23 13:19:18 from IP (94.55.168.118) because the server is too busy.
+Error Source: System.Private.CoreLib
+Error Code: 0
+Stack Trace: /Settings/SendEmails
+Date : 31.07.2023 13:19:18
+=========== End =============
+========= Error Logging =======
+=========== Start ============= 
+Error Message: Error in processing. The server response was: ESMTP MailEnable Service temporarily refused connection at 07/31/23 13:19:43 from IP (94.55.168.118) because the server is too busy.
+Error Source: System.Private.CoreLib
+Error Code: 0
+Stack Trace: /Settings/SendEmails
+Date : 31.07.2023 13:19:43
+=========== End =============
