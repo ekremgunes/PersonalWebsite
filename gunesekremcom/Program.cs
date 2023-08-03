@@ -57,7 +57,7 @@ builder.Services
 
 #endregion
 
-//fluent validations 
+//fluent validators
 #region Validators
 builder.Services.AddTransient<IValidator<CheckUserQuery>, LoginUserValidation>();
 builder.Services.AddTransient<IValidator<UpdateUserCommand>, UpdateUserCommandValidator>();
