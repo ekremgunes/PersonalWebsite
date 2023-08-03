@@ -72,8 +72,15 @@
                                             <div class="text-sm-center text-lg-left col-sm-12 col-lg-8 col-md-9">
                                                 <div class="mt-sm-2">
                                                     <h3 class="text-lg-left" style="margin-top: 0;">@item.Title</h3>
-                                                    @Html.Raw(item.Content.Length > 50 ? item.Content.Substring(0, 50) : item.Content.Substring(0, item.Content.Length))
+@if (item.Content.Contains("<img"))
+                                                    {
+                                                        @Html.Raw(item.Title)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.Raw(item.Content.Length > 50 ? item.Content.Substring(0, 50) : item.Content.Substring(0, item.Content.Length))
 
+                                                    }
                                                 </div>
                                                 <div class="inline-li-div text-lg-left">
                                                     <li><i class="fa-solid fa-people-group"></i> @item.ViewCount z.</li>
