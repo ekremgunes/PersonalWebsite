@@ -2440,3 +2440,10 @@ a.nturl {
     position: absolute !important;
     transition:none !important;
 }
+
+#content img{
+    max-width:100%;
+}
+#content{
+    word-wrap:break-word;
+}
