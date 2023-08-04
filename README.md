@@ -19,11 +19,11 @@
 - . .
 
 
-## ❓ Project View (UI / Dashboard)
+## ❓ Project View (UI / Dashboard)⏳
 
-![](/gunesekrem-front1)
+![](/gunesekrem-front1.gif)
 
-![](/gunesekrem-back1)
+![](/gunesekrem-back1.gif)
 
 
 ## 🌟 Some Features
